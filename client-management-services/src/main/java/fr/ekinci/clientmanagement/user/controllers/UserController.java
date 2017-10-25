@@ -1,7 +1,10 @@
 package fr.ekinci.clientmanagement.user.controllers;
 
+import fr.ekinci.clientmanagement.user.entities.UserEntity;
 import fr.ekinci.clientmanagement.user.models.UserDto;
 // import org.springframework.data.domain.PageRequest;
+import fr.ekinci.clientmanagement.user.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +20,17 @@ import java.util.Optional;
 @RequestMapping(path = "/users")
 public class UserController {
 
+	private final UserRepository userRepository;
+
+	@Autowired
+	public UserController(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<UserDto> get(@PathVariable String id) {
+	public ResponseEntity<UserEntity> get(@PathVariable Long id) {
 		// TODO
-		final Optional<UserDto> dtoOpt = Optional.empty();
+		final Optional<UserEntity> dtoOpt = Optional.of(userRepository.findOne(id));
 		return (dtoOpt.isPresent()) ?
 			new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -49,9 +59,8 @@ public class UserController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
-		// TODO
-		return new ResponseEntity<>(new UserDto(), HttpStatus.OK);
+	public ResponseEntity<UserEntity> create(@RequestBody UserEntity user) {
+		return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)

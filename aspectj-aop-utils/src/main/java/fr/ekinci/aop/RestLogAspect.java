@@ -30,7 +30,7 @@ public class RestLogAspect {
 	public void restAnnotation() {}
 
 	@Around("restAnnotation() && execution(* *(..))")
-	public void restLog(ProceedingJoinPoint joinPoint) {
+	public Object restLog(ProceedingJoinPoint joinPoint) {
 		final MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 		final Method method = signature.getMethod();
 
@@ -45,8 +45,9 @@ public class RestLogAspect {
 		final Instant start = Instant.now();
 
 		// @Before code
+		Object returnValue = null;
 		try {
-			joinPoint.proceed();
+			returnValue = joinPoint.proceed();
 		} catch (Throwable throwable) {
 			log.warning(String.format("[RestLogAspect] : %s", throwable.getMessage()));
 		}
@@ -62,5 +63,7 @@ public class RestLogAspect {
 					.map(argument -> (argument != null) ? argument.toString() : "null")
 					.collect(Collectors.joining(", "))
 		));
+
+		return returnValue;
 	}
 }
