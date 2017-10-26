@@ -27,6 +27,7 @@ public class UserService implements IUserService {
 			.stream()
 			.map(
 				u -> UserDto.builder()
+				.id(String.valueOf(u.getId()))
 				.firstName(u.getFirstName())
 				.lastName(u.getLastName())
 				.build()
@@ -56,6 +57,7 @@ public class UserService implements IUserService {
 
 		UserEntity userEntity1 = userRepository.save(userEntity);
 		return UserDto.builder()
+			.id(String.valueOf(userEntity1.getId()))
 			.firstName(userEntity1.getFirstName())
 			.lastName(userEntity1.getLastName())
 			.build();
