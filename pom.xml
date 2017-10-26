@@ -10,6 +10,7 @@
 
 	<modules>
 		<module>client-management-services</module>
+		<module>data-access-services</module>
 		<module>aspectj-aop-utils</module>
 	</modules>
 

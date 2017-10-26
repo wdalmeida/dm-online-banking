@@ -1,11 +1,17 @@
 package fr.ekinci.clientmanagement.user.controllers;
 
+import fr.ekinci.clientmanagement.user.entities.UserEntity;
 import fr.ekinci.clientmanagement.user.models.UserDto;
 // import org.springframework.data.domain.PageRequest;
+import fr.ekinci.clientmanagement.user.repositories.UserRepository;
+import fr.ekinci.clientmanagement.user.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +23,17 @@ import java.util.Optional;
 @RequestMapping(path = "/users")
 public class UserController {
 
+	private final UserService userService;
+
+	@Autowired
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
+
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<UserDto> get(@PathVariable Long id) {
+	public ResponseEntity<UserDto> get(@PathVariable @Valid @Pattern(regexp = "[0-9]{1,}") String id) {
 		// TODO
-		final Optional<UserDto> dtoOpt = Optional.of(new UserDto());
+		final Optional<UserDto> dtoOpt = userService.getUserById(id);
 		return (dtoOpt.isPresent()) ?
 			new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -50,7 +63,7 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
-		return new ResponseEntity<>(new UserDto(), HttpStatus.OK);
+		return new ResponseEntity<>(userService.create(user), HttpStatus.OK);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
