@@ -39,7 +39,11 @@ public class UserService implements IUserService {
 		UserEntity userEntity = userRepository.findOne(Long.parseLong(id));
 		return (userEntity != null) ?
 			Optional.of(
-				UserDto.builder().firstName(userEntity.getFirstName()).lastName(userEntity.getLastName()).build()
+				UserDto.builder()
+					.id(String.valueOf(userEntity.getId()))
+					.firstName(userEntity.getFirstName())
+					.lastName(userEntity.getLastName())
+					.build()
 			)
 			: Optional.empty();
 	}
