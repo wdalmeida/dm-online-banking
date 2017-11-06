@@ -1,7 +1,7 @@
 package fr.esipe.clientmanagement.user.controllers;
 
-import fr.esipe.clientmanagement.user.models.UserDto;
-// import org.springframework.data.domain.PageRequest;
+import fr.esipe.clientmodels.models.UserDto;
+import fr.esipe.restservices.utils.AccessAdvisor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +17,12 @@ import java.util.Optional;
 @RequestMapping(path = "/users")
 public class UserController {
 
+	private AccessAdvisor aa= new AccessAdvisor();
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<UserDto> get(@PathVariable Long id) {
 		// TODO
-		final Optional<UserDto> dtoOpt = Optional.of(new UserDto());
+
+		final Optional<UserDto> dtoOpt = Optional.of((aa.getEntity("/users/"+id, UserDto.class)));
 		return (dtoOpt.isPresent()) ?
 			new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
@@ -50,18 +52,13 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
-		return new ResponseEntity<>(new UserDto(), HttpStatus.OK);
+		UserDto newUser = aa.addEntity("/users", user, UserDto.class);
+		return new ResponseEntity<UserDto>(newUser,HttpStatus.OK);
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@PathVariable String id, @RequestBody UserDto user) {
-		// TODO
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-
-	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> delete(@PathVariable String id) {
-		// TODO
+		aa.putEntity("/users/"+id, user);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

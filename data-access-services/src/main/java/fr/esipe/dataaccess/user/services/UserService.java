@@ -1,8 +1,10 @@
 package fr.esipe.dataaccess.user.services;
 
 import fr.esipe.dataaccess.user.entities.UserEntity;
-import fr.esipe.dataaccess.user.models.UserDto;
+import fr.esipe.clientmodels.models.UserDto;
 import fr.esipe.dataaccess.user.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserService implements IUserService {
+
+	private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	private final UserRepository userRepository;
 
@@ -53,15 +57,24 @@ public class UserService implements IUserService {
 
 	@Override
 	public UserDto create(UserDto userDto) {
+		logger.debug("Create User");
 		UserEntity userEntity = new UserEntity();
 		userEntity.setFirstName(userDto.getFirstName());
 		userEntity.setLastName(userDto.getLastName());
-
+		userEntity.setStreet(userDto.getStreet());
+		userEntity.setCity(userDto.getCity());
+		userEntity.setPostalCode(userDto.getPostalCode());
+		userEntity.setPhone(userDto.getPhone());
 		UserEntity userEntity1 = userRepository.save(userEntity);
+
 		return UserDto.builder()
 			.id(String.valueOf(userEntity1.getId()))
 			.firstName(userEntity1.getFirstName())
 			.lastName(userEntity1.getLastName())
+			.street(userEntity1.getStreet())
+			.city(userEntity1.getCity())
+			.postalCode(userEntity1.getPostalCode())
+			.phone(userEntity1.getPhone())
 			.build();
 	}
 
@@ -72,6 +85,13 @@ public class UserService implements IUserService {
 
 	@Override
 	public void update(String id, UserDto userDto) {
-
+		logger.debug("Update User");
+		UserEntity userEntity = new UserEntity();
+		userEntity.setId(Long.parseLong(id));
+		userEntity.setStreet(userDto.getStreet());
+		userEntity.setCity(userDto.getCity());
+		userEntity.setPostalCode(userDto.getPostalCode());
+		userEntity.setPhone(userDto.getPhone());
+		userRepository.save(userEntity);
 	}
 }

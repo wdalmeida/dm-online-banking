@@ -2,12 +2,16 @@ package fr.esipe.restservices.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpRequest;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Configuration
+@PropertySource("classpath:/application.properties")
 public class AccessClient {
 	private final Logger logger = LoggerFactory.getLogger(AccessClient.class);
 
