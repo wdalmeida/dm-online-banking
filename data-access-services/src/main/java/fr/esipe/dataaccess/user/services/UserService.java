@@ -1,8 +1,11 @@
 package fr.esipe.dataaccess.user.services;
 
+import fr.esipe.clientmodels.models.AccountDto;
+import fr.esipe.dataaccess.user.entities.AccountEntity;
 import fr.esipe.dataaccess.user.entities.UserEntity;
 import fr.esipe.clientmodels.models.UserDto;
 import fr.esipe.dataaccess.user.repositories.UserRepository;
+import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ public class UserService implements IUserService {
 	private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	private final UserRepository userRepository;
+
+	private DozerBeanMapper mapper = new DozerBeanMapper();
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
@@ -44,12 +49,19 @@ public class UserService implements IUserService {
 	@Override
 	public Optional<UserDto> getUserById(String id) {
 		UserEntity userEntity = userRepository.findOne(Long.parseLong(id));
+		List<AccountEntity> ae = userEntity.getAccounts();
+		List<AccountDto> ad = ae.stream()
+				.map(
+						account -> mapper.map(account, AccountDto.class)
+				)
+				.collect(Collectors.toList());
 		return (userEntity != null) ?
 			Optional.of(
 				UserDto.builder()
 					.id(String.valueOf(userEntity.getId()))
 					.firstName(userEntity.getFirstName())
 					.lastName(userEntity.getLastName())
+					.accounts(ad)
 					.build()
 			)
 			: Optional.empty();
