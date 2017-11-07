@@ -18,10 +18,9 @@ import java.util.Optional;
 public class UserController {
 
 	private AccessAdvisor aa= new AccessAdvisor();
+
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<UserDto> get(@PathVariable Long id) {
-		// TODO Recevoir la liste des comptes
-
 		final Optional<UserDto> dtoOpt = Optional.of((aa.getEntity("/users/"+id, UserDto.class)));
 		return (dtoOpt.isPresent()) ?
 			new ResponseEntity<>(dtoOpt.get(), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);

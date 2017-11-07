@@ -49,20 +49,17 @@ public class UserService implements IUserService {
 	@Override
 	public Optional<UserDto> getUserById(String id) {
 		UserEntity userEntity = userRepository.findOne(Long.parseLong(id));
-		List<AccountEntity> ae = userEntity.getAccounts();
-		List<AccountDto> ad = ae.stream()
-				.map(
-						account -> mapper.map(account, AccountDto.class)
-				)
-				.collect(Collectors.toList());
 		return (userEntity != null) ?
 			Optional.of(
 				UserDto.builder()
 					.id(String.valueOf(userEntity.getId()))
 					.firstName(userEntity.getFirstName())
 					.lastName(userEntity.getLastName())
-					.accounts(ad)
-					.build()
+						.street(userEntity.getStreet())
+						.city(userEntity.getCity())
+						.postalCode(userEntity.getPostalCode())
+						.phone(userEntity.getPhone())
+						.build()
 			)
 			: Optional.empty();
 	}
