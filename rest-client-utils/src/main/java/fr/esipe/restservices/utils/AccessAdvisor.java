@@ -40,7 +40,7 @@ public class AccessAdvisor {
 	}
 
 	/**
-	 *
+	 * This method send and retrieve the response for all HTTP method POST
 	 * @param query
 	 * @param something
 	 * @param getClass
@@ -59,6 +59,7 @@ public class AccessAdvisor {
 
 	/**
 	 *
+	 * This method send and retrieve the response for all HTTP method PUT
 	 * @param query
 	 * @param something
 	 */

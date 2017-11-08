@@ -30,10 +30,15 @@ public class AccountController {
 		this.accountService = accountService;
 	}
 
-
+	/**
+	 * Send a new account into the database
+	 *
+	 * @param account AccountDto
+	 * @return AccountDto
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<AccountDto> create(@RequestBody AccountDto account) {
-		logger.debug("Adding User :"+account.toString());
+		logger.debug("Adding account :"+account.toString());
 		return new ResponseEntity<>(accountService.create(account), HttpStatus.OK);
 	}
 }

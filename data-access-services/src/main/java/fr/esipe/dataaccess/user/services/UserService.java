@@ -32,6 +32,11 @@ public class UserService implements IUserService {
 		this.userRepository = userRepository;
 	}
 
+	/**
+	 *
+	 *
+	 * @return
+	 */
 	@Override
 	public List<UserDto> getAll() {
 		return userRepository.findAll()
@@ -46,6 +51,11 @@ public class UserService implements IUserService {
 			.collect(Collectors.toList());
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
 	@Override
 	public Optional<UserDto> getUserById(String id) {
 		UserEntity userEntity = userRepository.findOne(Long.parseLong(id));
@@ -60,13 +70,22 @@ public class UserService implements IUserService {
 				UserDto.builder()
 					.id(String.valueOf(userEntity.getId()))
 					.firstName(userEntity.getFirstName())
-					.lastName(userEntity.getLastName())
+					.street(userEntity.getStreet())
+					.city(userEntity.getCity())
+						.postalCode(userEntity.getPostalCode())
+						.lastName(userEntity.getLastName())
+						.phone(userEntity.getPhone())
 					.accounts(ad)
 					.build()
 			)
 			: Optional.empty();
 	}
 
+	/**
+	 *
+	 * @param userDto
+	 * @return
+	 */
 	@Override
 	public UserDto create(UserDto userDto) {
 		logger.debug("Create User");
@@ -90,11 +109,20 @@ public class UserService implements IUserService {
 			.build();
 	}
 
+	/**
+	 *
+	 * @param id
+	 */
 	@Override
 	public void delete(String id) {
 
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param userDto
+	 */
 	@Override
 	public void update(String id, UserDto userDto) {
 		logger.debug("Update User");
