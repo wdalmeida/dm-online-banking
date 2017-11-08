@@ -19,6 +19,13 @@ public class UserController {
 
 	private AccessAdvisor aa= new AccessAdvisor();
 
+
+	/**
+	 * Get user data with the given id
+	 *
+	 * @param id Long
+	 * @return data in JSON
+	 */
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<UserDto> get(@PathVariable Long id) {
 		final Optional<UserDto> dtoOpt = Optional.of((aa.getEntity("/users/"+id, UserDto.class)));
@@ -49,12 +56,25 @@ public class UserController {
 			new ResponseEntity<>(userDtoList, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
+	/**
+	 * Add a user into the database
+	 *
+	 * @param user using JSON
+	 * @return user in JSON
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<UserDto> create(@RequestBody UserDto user) {
 		UserDto newUser = aa.addEntity("/users", user, UserDto.class);
 		return new ResponseEntity<UserDto>(newUser,HttpStatus.OK);
 	}
 
+	/**
+	 * Modify the user phone number and address
+	 *
+	 * @param id String
+	 * @param user using JSON
+	 * @return OK
+	 */
 	@RequestMapping(path = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@PathVariable String id, @RequestBody UserDto user) {
 		aa.putEntity("/users/"+id, user);

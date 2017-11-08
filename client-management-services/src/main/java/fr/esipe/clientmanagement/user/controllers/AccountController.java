@@ -20,6 +20,12 @@ public class AccountController {
 
 	private AccessAdvisor aa= new AccessAdvisor();
 
+	/**
+	 * Add an account in the database
+	 *
+	 * @param account using JSON
+	 * @return account in JSON
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<AccountDto> create(@RequestBody AccountDto account) {
 		AccountDto newAccount = aa.addEntity("/account", account, AccountDto.class);

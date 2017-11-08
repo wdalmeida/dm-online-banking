@@ -1,0 +1,13 @@
+fr.esipe
+fr.esipe.aop
+fr.esipe.clientmanagement.configuration
+fr.esipe.clientmanagement.user.controllers
+fr.esipe.clientmodels.models
+fr.esipe.clientservices.configuration
+fr.esipe.clientservices.user.controllers
+fr.esipe.dataaccess.configuration
+fr.esipe.dataaccess.user.controllers
+fr.esipe.dataaccess.user.entities
+fr.esipe.dataaccess.user.repositories
+fr.esipe.dataaccess.user.services
+fr.esipe.restservices.utils

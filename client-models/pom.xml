@@ -52,5 +52,10 @@
 			<artifactId>aspectj-aop-utils</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>warren.dalmeida</groupId>
+			<artifactId>client-models</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 </project>
